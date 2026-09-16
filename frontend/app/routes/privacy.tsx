@@ -1,4 +1,4 @@
-const lastUpdated = "April 8, 2025";
+const lastUpdated = "September 16, 2026";
 
 export function meta() {
 	return [
@@ -36,7 +36,9 @@ export default function Privacy() {
 			<p>
 				We collect and store emails received through our temporary email
 				addresses. These emails, including all content and attachments, are
-				stored on our servers indefinitely until manually deleted by you.
+				stored on our servers for up to 7 days after the last email is received
+				at that address, after which they are automatically deleted. You can
+				also delete them manually at any time.
 			</p>
 			<h3 id="22-usage-data">2.2 Usage Data</h3>
 			<p>
@@ -74,10 +76,11 @@ export default function Privacy() {
 			</ul>
 			<h2 id="4-data-retention">4. Data Retention</h2>
 			<p>
-				As stated above, we retain emails indefinitely until you choose to
-				delete them manually from our system. You have control over the removal
-				of your email data at any time through the "Clear all emails" button in
-				the user interface.
+				As stated above, inboxes are automatically deleted 7 days after the last
+				email is received at that address. Inboxes that are opened but never
+				receive any email are deleted 7 days after they are first opened. You
+				also have control over the removal of your email data at any time
+				through the "Clear all emails" button in the user interface.
 			</p>
 			<h2 id="5-data-security">5. Data Security</h2>
 			<p>
@@ -148,7 +151,8 @@ export default function Privacy() {
 				While we do not maintain logs that would allow us to respond to data
 				subject access requests or provide data exports under GDPR, you retain
 				full control over your email data and can delete all stored emails at
-				any time using the "Clear all emails" button in our user interface.
+				any time using the "Clear all emails" button in our user interface. Any
+				emails you do not delete are automatically removed after 7 days.
 			</p>
 			<h2 id="11-changes-to-this-privacy-policy">
 				11. Changes to This Privacy Policy

@@ -193,7 +193,14 @@ async fn store_email_in_redis(
     })?;
 
     // ConnectionManager handles reconnection automatically :D
-    let _: () = conn.zadd(&key, json, score).await?;
+    let _: () = redis::pipe()
+        .atomic()
+        .zadd(&key, json, score)
+        .ignore()
+        .expire(&key, INBOX_TTL_SECS)
+        .ignore()
+        .query_async(&mut conn)
+        .await?;
 
     Ok(())
 }
@@ -204,12 +211,18 @@ async fn store_email_in_redis(
 //
 // you might also ask - why the sentinel? because we want to ensure that the key is not empty
 // as otherwise redis will remove the key when we try to read it
+const INBOX_TTL_SECS: i64 = 7 * 24 * 60 * 60;
+
 const ENSURE_ZSET_SCRIPT: &str = r#"
     local key = KEYS[1]
     local sentinel = ARGV[1]
 
     -- Add sentinel member if it doesn't exist (and thus create the key)
     redis.call('ZADD', key, 'NX', -1, sentinel)
+
+    -- Make sure a freshly created inbox still expires, without extending
+    -- the lifetime of an existing one
+    redis.call('EXPIRE', key, ARGV[2], 'NX')
 
     -- Fetch everything newest-first
     local all = redis.call('ZREVRANGE', key, 0, -1)
@@ -241,6 +254,7 @@ async fn get_emails(
     let email_jsons: Vec<String> = redis::Script::new(ENSURE_ZSET_SCRIPT)
         .key(&key)
         .arg(sentinel)
+        .arg(INBOX_TTL_SECS)
         .invoke_async(&mut conn)
         .await
         .map_err(|e| {
