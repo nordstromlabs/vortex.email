@@ -1,33 +1,36 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LuX } from "react-icons/lu";
 import { NavLink } from "react-router";
 import links from "~/utils/links";
 
+const commitTime = Number(__GIT_COMMIT_TIME__) * 1000; // Convert UNIX timestamp to milliseconds
+
+function timeAgo(timestamp: number) {
+	const now = new Date();
+	const diff = Math.floor((now.getTime() - timestamp) / 1000); // Difference in seconds
+
+	if (diff < 60) return `${diff} second${diff !== 1 ? "s" : ""} ago`;
+	if (diff < 3600)
+		return `${Math.floor(diff / 60)} minute${
+			Math.floor(diff / 60) !== 1 ? "s" : ""
+		} ago`;
+	if (diff < 86400)
+		return `${Math.floor(diff / 3600)} hour${
+			Math.floor(diff / 3600) !== 1 ? "s" : ""
+		} ago`;
+	return `${Math.floor(diff / 86400)} day${
+		Math.floor(diff / 86400) !== 1 ? "s" : ""
+	} ago`;
+}
+
 export default function Footer() {
 	const commitHash = __GIT_COMMIT_HASH__;
 	const commitUrl = __GIT_COMMIT_URL__;
-	const commitTime = Number(__GIT_COMMIT_TIME__) * 1000; // Convert UNIX timestamp to milliseconds
 	const [isInfoOpen, setIsInfoOpen] = useState(false);
 
-	function timeAgo(timestamp: number) {
-		const now = new Date();
-		const diff = Math.floor((now.getTime() - timestamp) / 1000); // Difference in seconds
-
-		if (diff < 60) return `${diff} second${diff !== 1 ? "s" : ""} ago`;
-		if (diff < 3600)
-			return `${Math.floor(diff / 60)} minute${
-				Math.floor(diff / 60) !== 1 ? "s" : ""
-			} ago`;
-		if (diff < 86400)
-			return `${Math.floor(diff / 3600)} hour${
-				Math.floor(diff / 3600) !== 1 ? "s" : ""
-			} ago`;
-		return `${Math.floor(diff / 86400)} day${
-			Math.floor(diff / 86400) !== 1 ? "s" : ""
-		} ago`;
-	}
-
-	const commitAge = timeAgo(commitTime);
+	// Pages are prerendered at build time, so work out the age in the browser
+	const [commitAge, setCommitAge] = useState<string | null>(null);
+	useEffect(() => setCommitAge(timeAgo(commitTime)), []);
 
 	return (
 		<footer className="relative text-text/50 text-xs flex flex-col items-center py-4 mt-auto">
@@ -78,7 +81,18 @@ export default function Footer() {
 					>
 						{commitHash}
 					</a>{" "}
-					from about {commitAge}.
+					{commitAge ? (
+						<>from about {commitAge}.</>
+					) : (
+						<>
+							from{" "}
+							{new Date(commitTime).toLocaleDateString("en-GB", {
+								dateStyle: "long",
+								timeZone: "UTC",
+							})}
+							.
+						</>
+					)}
 				</p>
 				<span className="hidden sm:inline text-text/30">|</span>
 				<button
