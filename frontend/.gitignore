@@ -5,3 +5,7 @@
 /.react-router/
 /build/
 .vercel
+
+# Cloudflare
+/.wrangler/
+.cloudflare/

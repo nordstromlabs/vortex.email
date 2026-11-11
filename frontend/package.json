@@ -5,7 +5,8 @@
 	"scripts": {
 		"build": "cross-env NODE_ENV=production react-router build",
 		"dev": "react-router dev",
-		"start": "cross-env NODE_ENV=production react-router-serve ./build/server/index.js",
+		"preview": "bun run build && vite preview",
+		"deploy": "cf deploy",
 		"typecheck": "react-router typegen && tsc",
 		"lint": "biome lint",
 		"check": "biome check && knip && npm run typecheck",
@@ -15,34 +16,32 @@
 		"@fontsource-variable/inter": "^5.2.6",
 		"@ngneat/falso": "^7.3.0",
 		"@radix-ui/react-accordion": "^1.2.3",
-		"@react-router/node": "^7.5.0",
-		"@react-router/serve": "^7.5.0",
 		"@tanstack/react-query": "^5.72.0",
-		"@vercel/react-router": "^1.1.0",
 		"cross-env": "^7.0.3",
-		"isbot": "^5.1.25",
+		"isbot": "^5.2.3",
 		"letterparser": "^0.1.8",
 		"lettersanitizer": "^1.0.7",
-		"react": "^19.1.0",
-		"react-dom": "^19.1.0",
+		"react": "^19.3.1",
+		"react-dom": "^19.3.1",
 		"react-icons": "^5.5.0",
-		"react-router": "^7.5.0"
+		"react-router": "^8.5.1"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^1.9.4",
 		"@catppuccin/tailwindcss": "^0.1.6",
-		"@react-router/dev": "^7.5.0",
+		"@cloudflare/vite-plugin": "^2.0.0-beta.v.0",
+		"@react-router/dev": "^8.5.1",
 		"@tailwindcss/typography": "^0.5.16",
 		"@types/node": "^20.17.30",
-		"@types/react": "^19.1.0",
-		"@types/react-dom": "^19.1.1",
-		"autoprefixer": "^10.4.21",
+		"@types/react": "^19.3.0",
+		"@types/react-dom": "^19.3.0",
+		"autoprefixer": "^10.6.2",
+		"cf": "1.0.0-beta.30",
 		"knip": "^5.47.0",
-		"postcss": "^8.5.3",
+		"postcss": "^8.5.32",
 		"tailwindcss": "^3.4.17",
 		"typescript": "^5.8.3",
-		"vite": "^6.2.5",
-		"vite-tsconfig-paths": "^5.1.4"
+		"vite": "^8.3.8"
 	},
-	"trustedDependencies": ["@biomejs/biome"]
+	"trustedDependencies": ["@biomejs/biome", "esbuild", "workerd"]
 }

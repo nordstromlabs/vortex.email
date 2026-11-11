@@ -69,7 +69,7 @@ bun dev
 
 #### Frontend
 
-By default, the project is configured to run on Vercel. If you're not running the project on Vercel, remove the Vercel preset from react-router.config.ts.
+The frontend runs on Cloudflare Workers. Put the `VITE_*` variables in `frontend/.env.production`, then run `bun run deploy` in `frontend`. The Worker name and custom domains live in `frontend/cloudflare.config.ts`.
 
 #### Backend
 

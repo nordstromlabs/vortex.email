@@ -39,7 +39,7 @@ export default function Header() {
 					<SiGithub size={24} />
 				</a>
 				<a
-					href="https://x.com/skyfall_ggs"
+					href="https://x.com/skyfallpowered"
 					aria-label="Follow us on X"
 					target="_blank"
 					rel="noreferrer"
